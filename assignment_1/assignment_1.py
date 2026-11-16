@@ -40,6 +40,15 @@ def main() -> int:
         print("Error: could not connect to NASA's API.", file=sys.stderr)
         return 1
 
+    if response.status_code == 429:
+        print(
+            "Error: NASA's API rate limit was exceeded. Wait for the limit to reset. "
+            "If you are using DEMO_KEY, register for your own key at "
+            f"https://api.nasa.gov/ and set it in {env_path}.",
+            file=sys.stderr,
+        )
+        return 1
+
     if not response.ok:
         print(f"Error: NASA's API returned HTTP {response.status_code}.", file=sys.stderr)
         return 1
